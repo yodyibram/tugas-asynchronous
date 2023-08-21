@@ -35,24 +35,23 @@ const fetchNews = async function  (page, q) {
 console.log(`Fetching news for ${q}, Page number ${page}...`);
         var url = 'https://newsapi.org/v2/everything?' +
             'q=' +q+
-            '&from=2023-07-20&' +
+            '&from=2023-08-20&' +
             'language=en&' +
             'page=' +page+
             'sortBy=popularity&' +
-            'apiKey=4dadb27f447e4a42bd7450026e51813e';
+            'apiKey=76a6b07399f7453898a293eda62e54cb';
   
         var req = new Request(url);
     
         let a = await fetch(req)
         let response = await a.json()
         let article = response.status == "ok" ? response.articles : ''
-        console.log(JSON.stringify(article))
         
         let str = ""
-        for (let item of response.articles) {
-          if(!item.urlToImage) {str = ''}
+        response.articles.filter((item) => {
+          if(!item.urlToImage) {str = ""} 
           else {
-            str = str + `<div class="card my-4 mx-2" style="width: 18rem;">
+            str = str + `<div class="card my-4 mx-2 pt-3" style="width: 18rem;">
               <img src="${item.urlToImage}" class="card-img-top" alt="...">
               <div class="card-body">
                 <h5 class="card-title">${item.title}</h5>
@@ -61,8 +60,8 @@ console.log(`Fetching news for ${q}, Page number ${page}...`);
               </div>
             </div>`
           }
-        }
-        
+        })
+// filter yang url image nya tidak null
         document.querySelector("#berita").innerHTML = str
     }
     fetchNews(1, "sports")
