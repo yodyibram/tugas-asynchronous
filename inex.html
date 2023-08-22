@@ -48,10 +48,12 @@ console.log(`Fetching news for ${q}, Page number ${page}...`);
         let article = response.status == "ok" ? response.articles : ''
         
         let str = ""
-        response.articles.filter((item) => {
-          if(!item.urlToImage) {str = ""} 
-          else {
-            str = str + `<div class="card my-4 mx-2 pt-3" style="width: 18rem;">
+        let data = response.articles.filter((item) => {
+          if(item.urlToImage) return item
+        })
+        
+        for (const item of data) {
+          str = str + `<div class="card my-4 mx-2 pt-3" style="width: 18rem;">
               <img src="${item.urlToImage}" class="card-img-top" alt="...">
               <div class="card-body">
                 <h5 class="card-title">${item.title}</h5>
@@ -59,9 +61,9 @@ console.log(`Fetching news for ${q}, Page number ${page}...`);
                 <a href="${item.url}" target="_blank" class="btn btn-primary">Read more</a>
               </div>
             </div>`
-          }
-        })
+        }
 // filter yang url image nya tidak null
+        
         document.querySelector("#berita").innerHTML = str
     }
     fetchNews(1, "sports")
